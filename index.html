@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>移动端滑动插件</title>
+		<link rel="stylesheet" type="text/css" href="css/xswiper.css"/>
+		<style type="text/css">
+		li{
+			height: 200px;
+			float: left;
+		}
+			li:nth-child(1){
+				background-color: red;
+			}
+			li:nth-child(2){
+				background-color: #000;
+			}
+			li:nth-child(3){
+				background-color: yellow;
+			}
+			li:nth-child(4){
+				background-color: yellowgreen;
+			}
+			li:nth-child(5){
+				background-color: hotpink;
+			}
+			.swiper{
+				position: relative;
+				margin-bottom: 20px;
+			}
+			.swiper-box2{
+				position: absolute;
+			}
+		</style>
+	</head>
+	<body>
+		<h2>css3</h2>
+		<section class="swiper">
+			<ul class="swiper-box clearfix">
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+			</ul>
+		</section>
+		<h2>absolute</h2>
+		<section class="swiper">
+			<ul class="swiper-box2 clearfix">
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+			</ul>
+		</section>
+		<script src="js/jquery-1.11.0.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/xSwiper.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var test = new xSwiper({
+				obody:$(".swiper-box"),
+				ochild:$(".swiper-box").find("li"),
+				autoplay:true,
+				succ:function(index){
+					//console.log(index)
+				}
+			}),
+			test2 = new xSwiper({
+				obody:$(".swiper-box2"),
+				ochild:$(".swiper-box2").find("li"),
+				css3:false
+			});
+		</script>
+	</body>
+</html>
