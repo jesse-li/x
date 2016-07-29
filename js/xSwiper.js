@@ -35,12 +35,19 @@ xSwiper.prototype = {
 	_first: function(inedx) {//当点击轮播个体时，传入当前的index，进入图片浏览模式，并通过index计算该轮播到什么位置（由于需求，这里只支持css3的情况）
 		var _this = this;
 		/*if (_this.thatIndex || _this.thatIndex === 0) {*/
-			_this.index = inedx;
-			_this.obody.css({
-				"transform": "translate3d(" + (-_this.index * $(window).width()) + "px,0px,0px)"
-				//"transition-duration": _this.speed+"ms"
-
-			});
+			_this.index = index;
+			if(_this.css3){
+				_this.obody.css({
+					"transform": "translate3d(" + (-_this.index * $(window).width()) + "px,0px,0px)"
+					//"transition-duration": _this.speed+"ms"
+	
+				});
+			}else{
+				_this.obody.css({
+					"left":-(_thisindex*$(window).width())+"px"
+				})
+			}
+			
 			if (_this.succ && typeof(_this.succ) === "function") {
 				_this.succ(_this.index, _this.ochild);
 			}
@@ -55,10 +62,15 @@ xSwiper.prototype = {
 			}else{
 				_this.index += 1;
 			}
-			_this.obody.css({
-				"transform": "translate3d(" + (-_this.index * $(window).width()) + "px,0px,0px)",
-				"transition-duration": _this.speed+"ms"
-			});
+			if(_this.css3){
+				_this.obody.css({
+					"transform": "translate3d(" + (-_this.index * $(window).width()) + "px,0px,0px)",
+					"transition-duration": _this.speed+"ms"
+				});
+			}else{
+				_this.obody.animate({"left":-_this.index * $(window).width() },_this.speed)
+			}
+			
 			if (_this.succ && typeof(_this.succ) === "function") {
 				_this.succ(_this.index, _this.ochild);
 			}
