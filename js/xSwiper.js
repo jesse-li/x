@@ -4,7 +4,7 @@ var xSwiper = function(option) {
 	_this.ochild = option.ochild;//轮播个体
 	_this.succ = option.succ;//每次运动结束后的回调函数
 	_this.css3 = option.css3===undefined||option.css3===true?true:false;//是否使用css动画，布尔值，默认使用(如果不使用，需要position:absolute布局)
-	_this.absolutely = option.absolutely === undefined || option.absolutely === true ? _this.absolutely = true : _this.absolutely = false;//轮播是否全屏，默认是
+	_this.absolutely = option.absolutely === undefined || option.absolutely === true ? true : false//轮播是否全屏，默认是	
 	//_this.index = 0;//记录轮播到了第几条(应该不需要用户设置，，，，考虑私有化)
 	_this.bindclick = option.bindclick;//绑定轮播个体点击事件
 	_this.autoplay = option.autoplay;
@@ -21,12 +21,13 @@ xSwiper.prototype = {
 		_this.index = 0;
 		_this.t = true;
 		_this.timerAuto=null;
+		_this.width = 0;
+		_this._widthF();
 		_this._startF();
 		_this._moveF();
 		_this._endF();
 		//_this._first(_this.thatIndex);//不需要用户来传，用户只要调用实例对象的_first方法就可以进行指定滚动
 		_this._resizeF();
-		_this._widthF();
 		if(_this.autoplay){
 			_this._autoPlayF()
 		}
@@ -38,13 +39,13 @@ xSwiper.prototype = {
 			_this.index = index;
 			if(_this.css3){
 				_this.obody.css({
-					"transform": "translate3d(" + (-_this.index * $(window).width()) + "px,0px,0px)"
+					"transform": "translate3d(" + (-_this.index * _this.width) + "px,0px,0px)"
 					//"transition-duration": _this.speed+"ms"
 	
 				});
 			}else{
 				_this.obody.css({
-					"left":-(_thisindex*$(window).width())+"px"
+					"left":-(_thisindex*_this.width)+"px"
 				})
 			}
 			
@@ -64,11 +65,11 @@ xSwiper.prototype = {
 			}
 			if(_this.css3){
 				_this.obody.css({
-					"transform": "translate3d(" + (-_this.index * $(window).width()) + "px,0px,0px)",
+					"transform": "translate3d(" + (-_this.index * _this.width) + "px,0px,0px)",
 					"transition-duration": _this.speed+"ms"
 				});
 			}else{
-				_this.obody.animate({"left":-_this.index * $(window).width() },_this.speed)
+				_this.obody.animate({"left":-_this.index * _this.width },_this.speed)
 			}
 			
 			if (_this.succ && typeof(_this.succ) === "function") {
@@ -79,10 +80,14 @@ xSwiper.prototype = {
 	},
 	_widthF: function() {//计算并设置主体和个体宽度的方法，默认全屏
 		var _this = this;
-		if (_this.absolutely) {
-			_this.obody.width(_this.ochild.length * $(window).width());
-			_this.ochild.width($(window).width());
+		if(_this.absolutely){
+			_this.width = $(window).width();
+		}else{
+			_this.width = _this.obody.parent().width();
 		}
+		_this.obody.width(_this.ochild.length * _this.width);
+		_this.ochild.width(_this.width);
+		
 		if(!_this.css3){//如果不使用css3滚动，需要设置外层的高度
 			_this.obody.parent().height(_this.obody.height())
 		}
@@ -135,7 +140,7 @@ xSwiper.prototype = {
 							} else {
 								_this.index -= 1;
 								_this.obody.css({
-									"transform": "translate3d(" + (-_this.index * _this.ochild.width()) + "px,0px,0px)",
+									"transform": "translate3d(" + (-_this.index * _this.width) + "px,0px,0px)",
 									"transition-duration": _this.speed+"ms"
 		
 								});
@@ -153,7 +158,8 @@ xSwiper.prototype = {
 							}
 		
 						} else {//使用传统的定位进行运动
-							if (parseInt(_this.obody.css("left")) >= 0 || !parseInt(_this.obody.css("left"))) {
+							/*if (parseInt(_this.obody.css("left")) >= 0 || !parseInt(_this.obody.css("left"))) {*/
+								if(_this.index === 0){
 								setTimeout(function() {
 										_this.t = true;
 		
@@ -164,7 +170,7 @@ xSwiper.prototype = {
 							} else {
 								_this.index -= 1;
 								_this.obody.animate({
-										"left": "+=" + _this.ochild.width()
+										"left": "+=" + _this.width
 		
 									},
 									_this.spped,
@@ -190,7 +196,8 @@ xSwiper.prototype = {
 			} else if (_this.moveX && _this.moveX < _this.startX) {
 				//console.log("左滑");
 				if (_this.css3) {
-					if (_this.index * _this.ochild.width() >= _this.ochild.length * _this.ochild.width() - _this.ochild.parent().parent().width()) {
+					/*if (_this.index * _this.ochild.width() >= _this.ochild.length * _this.ochild.width() - _this.ochild.parent().parent().width()) {*/
+						if(_this.index >= _this.ochild.length-1){
 						setTimeout(function() {
 								_this.t = true;
 
@@ -201,7 +208,7 @@ xSwiper.prototype = {
 					} else {
 						_this.index += 1;
 						_this.obody.css({
-							"transform": "translate3d(" + (-_this.index * _this.ochild.width()) + "px,0px,0px)",
+							"transform": "translate3d(" + (-_this.index * _this.width) + "px,0px,0px)",
 							"transition-duration": _this.speed+"ms"
 
 						});
@@ -218,14 +225,15 @@ xSwiper.prototype = {
 					}
 
 				} else {
-					if (parseInt(_this.obody.css("left")) <= -(_this.ochild.length * _this.ochild.width() - _this.ochild.parent().parent().width())) {
+					/*if (parseInt(_this.obody.css("left")) <= -(_this.ochild.length * _this.ochild.width() - _this.ochild.parent().parent().width())) {*/
+						if(_this.index >= _this.ochild.length+1){
 						_this.t = true;
 						return;
 
 					} else {
 						_this.index += 1;
 						_this.obody.animate({
-								"left": "-=" + _this.ochild.width()
+								"left": "-=" + _this.width
 
 							},
 							_this.speed,
@@ -262,8 +270,9 @@ xSwiper.prototype = {
 		var _this = this;
 		$(window).on("resize",
 			function() {
+				_this._widthF();
 				_this.index = 0;
-				_this.ochild.width($(window).width());
+				_this.ochild.width(_this._width);
 				if (_this.css3) {
 					_this.obody.css("transform", "translate3d(0px,0px,0px)");
 				}

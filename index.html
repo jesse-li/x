@@ -27,7 +27,9 @@
 			}
 			.swiper{
 				position: relative;
+				margin: 0 50px;
 				margin-bottom: 20px;
+				overflow: hidden;
 			}
 			.swiper-box2{
 				position: absolute;
@@ -62,8 +64,9 @@
 				obody:$(".swiper-box"),
 				ochild:$(".swiper-box").find("li"),
 				autoplay:true,
+				absolutely:false,
 				succ:function(index){
-					//console.log(index)
+					
 				}
 			}),
 			test2 = new xSwiper({
