@@ -226,7 +226,7 @@ xSwiper.prototype = {
 
 				} else {
 					/*if (parseInt(_this.obody.css("left")) <= -(_this.ochild.length * _this.ochild.width() - _this.ochild.parent().parent().width())) {*/
-						if(_this.index >= _this.ochild.length+1){
+						if(_this.index >= _this.ochild.length-1){
 						_this.t = true;
 						return;
 
