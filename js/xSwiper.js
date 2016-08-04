@@ -26,6 +26,7 @@ xSwiper.prototype = {
 		_this._startF();
 		_this._moveF();
 		_this._endF();
+		_this.close = false;
 		//_this._first(_this.thatIndex);//不需要用户来传，用户只要调用实例对象的_first方法就可以进行指定滚动
 		_this._resizeF();
 		if(_this.autoplay){
@@ -33,7 +34,7 @@ xSwiper.prototype = {
 		}
 		
 	},
-	_first: function(inedx) {//当点击轮播个体时，传入当前的index，进入图片浏览模式，并通过index计算该轮播到什么位置（由于需求，这里只支持css3的情况）
+	_first: function(index) {//当点击轮播个体时，传入当前的index，进入图片浏览模式，并通过index计算该轮播到什么位置
 		var _this = this;
 		/*if (_this.thatIndex || _this.thatIndex === 0) {*/
 			_this.index = index;
@@ -100,6 +101,7 @@ xSwiper.prototype = {
 				e.preventDefault();
 				e.stopPropagation();
 				_this.startX = e.originalEvent.targetTouches[0].pageX;
+				_this.close = false;
 			});
 	},
 	_moveF: function() {//绑定主体的touchmove事件，用于计算滑动的结束X坐标，又close开关控制不会调用运动方法，减少频繁调用引起的bug
@@ -107,9 +109,11 @@ xSwiper.prototype = {
 		_this.obody.on("touchmove",
 			function(e) {
 				clearTimeout(_this.timerAuto);
-				_this._autoPlayF();
+				if(_this.autoplay){
+					_this._autoPlayF();
+				}
 				_this.moveX = e.originalEvent.targetTouches[0].pageX;
-				//_this.close = true;
+				_this.close = true;
 			})
 
 	},
@@ -126,7 +130,7 @@ xSwiper.prototype = {
 		e.stopPropagation();
 		//if (_this.t && _this.close) {//控制器，必须用户滑动结束且上一次运动结束才调用 2016-7-29修改点击和滑动的判定
 		
-			if(Math.abs(_this.moveX-_this.startX)>100){
+			if(Math.abs(_this.moveX-_this.startX)>100&&_this.close){
 				if(_this.t){
 					_this.t = false;
 					//_this.close = false;
