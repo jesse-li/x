@@ -6,6 +6,9 @@
 		<title>移动端滑动插件</title>
 		<link rel="stylesheet" type="text/css" href="css/xswiper.css"/>
 		<style type="text/css">
+		html,body{
+			height: 2000px;
+		}
 		li{
 			height: 200px;
 			float: left;
@@ -31,8 +34,14 @@
 				margin-bottom: 20px;
 				overflow: hidden;
 			}
-			.swiper-box2{
+			.swiper-box2,.swiper-box4{
 				position: absolute;
+			}
+			.swiper-box3,.swiper-box4>li{
+				height: auto;
+			}
+			.swiper-box3>li>img,.swiper-box4>li>img{
+				width: 100%;
 			}
 		</style>
 	</head>
@@ -57,16 +66,39 @@
 				<li></li>
 			</ul>
 		</section>
+		
+		<h2>混乱模式</h2>
+		<section class="swiper">
+			<ul class="swiper-box3 clearfix">
+				<li><img src="img/demo.jpg"/></li>
+				<li><img src="img/demo2.jpg"/></li>
+				<li><img src="img/demo3.jpg"/></li>
+				<li><img src="img/demo4.jpg"/></li>
+			</ul>
+		</section>
+		<h2>混乱模式+传统滚动</h2>
+		<section class="swiper">
+			<ul class="swiper-box4 clearfix">
+				<li><img src="img/demo.jpg"/></li>
+				<li><img src="img/demo2.jpg"/></li>
+				<li><img src="img/demo3.jpg"/></li>
+				<li><img src="img/demo4.jpg"/></li>
+			</ul>
+		</section>
 		<script src="js/jquery-1.11.0.js" type="text/javascript" charset="utf-8"></script>
-		<script src="js/xSwiper.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/xSwiper.min.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			var test = new xSwiper({
 				obody:$(".swiper-box"),
 				ochild:$(".swiper-box").find("li"),
-				autoplay:true,
+				autoplay:false,
 				absolutely:false,
 				succ:function(index){
 					
+				},
+				bindclick:function(){
+					$("body").append("<p style='color:red'>return</p>")
+					//alert("return")
 				}
 			}),
 			test2 = new xSwiper({
@@ -74,6 +106,19 @@
 				ochild:$(".swiper-box2").find("li"),
 				css3:false,
 				autoplay:true
+			}),
+			test3 = new xSwiper({
+				obody:$(".swiper-box3"),
+				ochild:$(".swiper-box3").find("li"),
+				chaos:260,
+				absolutely:false
+			}),
+			test4 = new xSwiper({
+				obody:$(".swiper-box4"),
+				ochild:$(".swiper-box4").find("li"),
+				chaos:260,
+				absolutely:false,
+				css3:false
 			});
 		</script>
 	</body>
