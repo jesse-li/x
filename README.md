@@ -42,4 +42,4 @@ chaos （number，轮播主体的高度，默认不开启，是否开启混乱�
 
 # 线上demo地址
 
-<a href="https://jesse-li.github.io/xSwiper/" target="_blank"></a>
+<a href="https://jesse-li.github.io/xSwiper/" target="_blank">demo</a>
