@@ -1,6 +1,6 @@
-﻿xSwiper初始化方法：
+﻿# xSwiper初始化方法：
  var swiper = new xSwiper();
-相关参数说明：
+# 相关参数说明：
 
 obody（Jquery对象，滑动主体）
 
@@ -39,3 +39,7 @@ chaos （number，轮播主体的高度，默认不开启，是否开启混乱�
 2016-08-01 完善left运动逻辑，新增非全屏的处理方法
 
 2016-08-10 解决safari中window resize，alter导致touch事件堵塞的问题，新增上下滑动判断，新增一种解决轮播图大小不一的模式（chaos）
+
+# 线上demo地址
+
+<a href="https://jesse-li.github.io/xSwiper/" target="_blank"></a>
